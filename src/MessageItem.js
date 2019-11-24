@@ -7,11 +7,11 @@ const MessageListStyle={
     listStyleType:'none'
 }
 
-export const MessageItem=({users,info,email,phone,cell})=>{
+export const MessageItem=({key, users,email,phone,cell})=>{
  return(
-     <li style={MessageListStyle}>
+     <li key={key} style={MessageListStyle}>
         <h1>{users}  </h1>
-        <span>{info} | </span>
+         
         <span>{email} | </span>
         <phone>{phone} | </phone>
         <phone>{cell} </phone>

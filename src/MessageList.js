@@ -17,12 +17,17 @@ export class MessageList extends React.Component
         phone={phone} cell={cell}/>
     }
    render(){ 
+       
+      
    return(
        <div>
        {this.props.contacts.map(this.contactToContactItem)}
-       
-       
        </div>
-   );
+   )
+   
+   
+       
+   
 }
+
 }

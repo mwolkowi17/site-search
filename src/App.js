@@ -13,47 +13,76 @@ class App extends Component {
     this.state={
       contacts:[],
       contactsA:['marcin','iwona'
-      ]
-      
+      ],
+      isLoading: false,
+      filteredContacs:[],
+      filteredContacsB:null
     }
   
   }
   componentDidMount(){
     fetch("https://randomuser.me/api/?format=json&results=50")
        .then(res=>res.json())
-       .then(data=>this.setState({contacts:data.results}))
+       .then(data=>this.setState({filteredContacs:data.results}))
+       
+       .then(this.setState({isLoading: true}))
+      
   }
 
   finder=()=>{
-    return( 
-    <input type='text' onInput={this.filterUsers.bind(this)} ></input>
+    return( <div>
+    <input id="textA" type='text' ></input>
+    <button  onClick={this.filterUsers.bind(this)}>Wyszukaj </button>
+    <button onClick={this.filterUsersB.bind(this)}>Reset</button>
+    </div>
     )
-
+    function button() {
+      return(<button onClick={this.filterUsers.bind(this)}></button>)
+      
+    }
   }
-  filterUsers(e) {
-    const text = e.currentTarget.value;
-    const filteredContacs = this.getFilteredUsersForText(text)
-    this.setState({
-      contacts:filteredContacs
-    })
-  }
-  getFilteredUsersForText(text) {
   
-    return this.state.contacts.filter(check => check.name.last.toLowerCase().includes(text.toLowerCase()))
-  }
+  
   render() {
     return (
       <div style={{position:'relative'}}>
       <div className="App" style={{position:'relative', maxWidth:'1240px', marginLeft:'auto', marginRight:'auto'}}>
         <Header find={this.finder()} name='Header'/>
         <Toolbar name='Toolbar' />
-        <MessageList contacts={this.state.contacts} />
+        
+        <MessageList contacts={this.state.filteredContacs} />
 
         <p>Treść</p>
       </div>
       </div>
     );
   }
+  
+  filterUsers() {
+    const text = document.getElementById("textA").value;
+    const filteredContacs = this.getFilteredUsersForText(text)
+    this.setState({
+      filteredContacs
+    })
+  }
+  filterUsersB() {
+    document.getElementById("textA").value=null
+    //const text = document.getElementById("textA").value
+    //const filteredContacs = this.getFilteredUsersForText(text)
+    //this.setState({
+    //  filteredContacs
+    //})
+    fetch("https://randomuser.me/api/?format=json&results=50")
+       .then(res=>res.json())
+       .then(data=>this.setState({filteredContacs:data.results}))
+       
+       .then(this.setState({isLoading: true}))
+  }
+  getFilteredUsersForText(text) {
+  
+    return this.state.filteredContacs.filter(check => check.name.last.toLowerCase().includes(text.toLowerCase()))
+  }
+  
 }
 
 export default App;
